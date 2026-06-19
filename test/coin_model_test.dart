@@ -44,12 +44,7 @@ void main() {
     });
 
     test('parses rank when sent as String instead of int', () {
-      final json = {
-        'uuid': 'x',
-        'symbol': 'X',
-        'name': 'X Coin',
-        'rank': '42',
-      };
+      final json = {'uuid': 'x', 'symbol': 'X', 'name': 'X Coin', 'rank': '42'};
 
       final coin = CoinModel.fromJson(json);
 

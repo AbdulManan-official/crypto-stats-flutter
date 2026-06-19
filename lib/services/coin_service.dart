@@ -71,9 +71,9 @@ class CoinService {
   /// Fetches full details for a single coin by UUID.
   /// [timePeriod] controls the sparkline range.
   Future<CoinDetail> getCoinDetail(
-      String uuid, {
-        String timePeriod = '7d',
-      }) async {
+    String uuid, {
+    String timePeriod = '7d',
+  }) async {
     try {
       final response = await _dio.get(
         '/coin/$uuid',
@@ -93,9 +93,9 @@ class CoinService {
   // ─── Get Coin Price History ─────────────────────────────────────────────────
   /// Returns list of [timePeriod, price] pairs for charting.
   Future<List<Map<String, dynamic>>> getCoinHistory(
-      String uuid, {
-        String timePeriod = '7d',
-      }) async {
+    String uuid, {
+    String timePeriod = '7d',
+  }) async {
     try {
       final response = await _dio.get(
         '/coin/$uuid/history',
@@ -108,10 +108,12 @@ class CoinService {
       final history = data['history'] as List<dynamic>? ?? [];
       return history
           .where((e) => e['price'] != null)
-          .map((e) => {
-        'price': double.tryParse(e['price'].toString()) ?? 0.0,
-        'timestamp': e['timestamp'] as int? ?? 0,
-      })
+          .map(
+            (e) => {
+              'price': double.tryParse(e['price'].toString()) ?? 0.0,
+              'timestamp': e['timestamp'] as int? ?? 0,
+            },
+          )
           .toList();
     } on DioException catch (e) {
       throw _handleError(e);

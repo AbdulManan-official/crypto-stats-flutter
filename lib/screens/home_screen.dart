@@ -23,157 +23,161 @@ class HomeScreen extends StatelessWidget {
       }
     });
     return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Scaffold(
-      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-      body: SafeArea(
-        child: RefreshIndicator(
-          color: AppColors.primary,
-          backgroundColor: AppColors.card,
-          onRefresh: vm.refreshAll,
-          child: CustomScrollView(
-            controller: scrollController,
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        body: SafeArea(
+          child: RefreshIndicator(
+            color: AppColors.primary,
+            backgroundColor: AppColors.card,
+            onRefresh: vm.refreshAll,
+            child: CustomScrollView(
+              controller: scrollController,
 
-            physics: const AlwaysScrollableScrollPhysics(),
-            slivers: [
-              // ── App Bar ──────────────────────────────────────────────────
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: hp.copyWith(top: 20, bottom: 0),
-                  child: _HomeAppBar(vm: vm),
+              physics: const AlwaysScrollableScrollPhysics(),
+              slivers: [
+                // ── App Bar ──────────────────────────────────────────────────
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: hp.copyWith(top: 20, bottom: 0),
+                    child: _HomeAppBar(vm: vm),
+                  ),
                 ),
-              ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                const SliverToBoxAdapter(child: SizedBox(height: 20)),
 
-              // ── Search Bar ───────────────────────────────────────────────
-              SliverToBoxAdapter(
-                child: Padding(
-                  padding: hp,
-                  child: _SearchBar(vm: vm),
+                // ── Search Bar ───────────────────────────────────────────────
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: hp,
+                    child: _SearchBar(vm: vm),
+                  ),
                 ),
-              ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                const SliverToBoxAdapter(child: SizedBox(height: 20)),
 
-              // ── Search Results ───────────────────────────────────────────
-              SliverToBoxAdapter(
-                child: Obx(() {
-                  if (!vm.isSearching) return const SizedBox.shrink();
-                  return Padding(
-                    padding: hp,
-                    child: _SearchResults(vm: vm),
-                  );
-                }),
-              ),
+                // ── Search Results ───────────────────────────────────────────
+                SliverToBoxAdapter(
+                  child: Obx(() {
+                    if (!vm.isSearching) return const SizedBox.shrink();
+                    return Padding(
+                      padding: hp,
+                      child: _SearchResults(vm: vm),
+                    );
+                  }),
+                ),
 
-              // ── Global Stats ─────────────────────────────────────────────
-              SliverToBoxAdapter(
-                child: Obx(() {
-                  if (vm.isSearching) return const SizedBox.shrink();
-                  return Padding(
-                    padding: hp,
-                    child: _StatsSection(vm: vm),
-                  );
-                }),
-              ),
+                // ── Global Stats ─────────────────────────────────────────────
+                SliverToBoxAdapter(
+                  child: Obx(() {
+                    if (vm.isSearching) return const SizedBox.shrink();
+                    return Padding(
+                      padding: hp,
+                      child: _StatsSection(vm: vm),
+                    );
+                  }),
+                ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 24)),
+                const SliverToBoxAdapter(child: SizedBox(height: 24)),
 
-              // ── Coins Header + Filters ───────────────────────────────────
-              SliverToBoxAdapter(
-                child: Obx(() {
-                  if (vm.isSearching) return const SizedBox.shrink();
-                  return Padding(
-                    padding: hp,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SectionHeader(title: 'Top Coins'),
-                        const SizedBox(height: 14),
-                        _FiltersRow(vm: vm),
-                      ],
-                    ),
-                  );
-                }),
-              ),
+                // ── Coins Header + Filters ───────────────────────────────────
+                SliverToBoxAdapter(
+                  child: Obx(() {
+                    if (vm.isSearching) return const SizedBox.shrink();
+                    return Padding(
+                      padding: hp,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SectionHeader(title: 'Top Coins'),
+                          const SizedBox(height: 14),
+                          _FiltersRow(vm: vm),
+                        ],
+                      ),
+                    );
+                  }),
+                ),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 12)),
+                const SliverToBoxAdapter(child: SizedBox(height: 12)),
 
-              // ── Coins List ───────────────────────────────────────────────
-              Obx(() {
-                if (vm.isSearching) return const SliverToBoxAdapter(child: SizedBox.shrink());
+                // ── Coins List ───────────────────────────────────────────────
+                Obx(() {
+                  if (vm.isSearching)
+                    return const SliverToBoxAdapter(child: SizedBox.shrink());
 
-                // Loading state
-                if (vm.coinsLoading.value) {
+                  // Loading state
+                  if (vm.coinsLoading.value) {
+                    return SliverPadding(
+                      padding: hp,
+                      sliver: SliverToBoxAdapter(child: CoinListShimmer()),
+                    );
+                  }
+
+                  // Error state
+                  if (vm.coinsError.value.isNotEmpty && vm.coins.isEmpty) {
+                    return SliverToBoxAdapter(
+                      child: AppErrorWidget(
+                        message: vm.coinsError.value,
+                        onRetry: () => vm.fetchCoins(refresh: true),
+                        fullScreen: true,
+                      ),
+                    );
+                  }
+
+                  // Empty state
+                  if (vm.coins.isEmpty) {
+                    return const SliverToBoxAdapter(
+                      child: AppEmptyWidget(
+                        icon: Icons.currency_bitcoin,
+                        title: 'No coins found',
+                        subtitle: 'Pull down to refresh',
+                      ),
+                    );
+                  }
+
                   return SliverPadding(
                     padding: hp,
-                    sliver: SliverToBoxAdapter(child: CoinListShimmer()),
-                  );
-                }
-
-                // Error state
-                if (vm.coinsError.value.isNotEmpty && vm.coins.isEmpty) {
-                  return SliverToBoxAdapter(
-                    child: AppErrorWidget(
-                      message: vm.coinsError.value,
-                      onRetry: () => vm.fetchCoins(refresh: true),
-                      fullScreen: true,
-                    ),
-                  );
-                }
-
-                // Empty state
-                if (vm.coins.isEmpty) {
-                  return const SliverToBoxAdapter(
-                    child: AppEmptyWidget(
-                      icon: Icons.currency_bitcoin,
-                      title: 'No coins found',
-                      subtitle: 'Pull down to refresh',
-                    ),
-                  );
-                }
-
-                return SliverPadding(
-                  padding: hp,
-                  sliver: SliverList.separated(
-                    itemCount: vm.coins.length + 1, // +1 for load more
-                    separatorBuilder: (_, __) => const SizedBox(height: 10),
-                    itemBuilder: (context, index) {
-                      // Load more trigger
-                      if (index == vm.coins.length) {
-                        return Obx(() {
-                          if (vm.coinsLoadingMore.value) {
-                            return const LoadMoreIndicator();
-                          }
-                          if (vm.hasMoreCoins) {
+                    sliver: SliverList.separated(
+                      itemCount: vm.coins.length + 1, // +1 for load more
+                      separatorBuilder: (_, __) => const SizedBox(height: 10),
+                      itemBuilder: (context, index) {
+                        // Load more trigger
+                        if (index == vm.coins.length) {
+                          return Obx(() {
+                            if (vm.coinsLoadingMore.value) {
+                              return const LoadMoreIndicator();
+                            }
+                            if (vm.hasMoreCoins) {
+                              return const SizedBox(height: 20);
+                            }
                             return const SizedBox(height: 20);
-                          }
-                          return const SizedBox(height: 20);
-                        });
-                      }
+                          });
+                        }
 
-                      final coin = vm.coins[index];
-                      return CoinCard(
-                        coin: coin,
-                        onTap: () => _openDetail(context, coin, vm),
-                      );
-                    },
-                  ),
-                );
-              }),
+                        final coin = vm.coins[index];
+                        return CoinCard(
+                          coin: coin,
+                          onTap: () => _openDetail(context, coin, vm),
+                        );
+                      },
+                    ),
+                  );
+                }),
 
-              const SliverToBoxAdapter(child: SizedBox(height: 30)),
-            ],
+                const SliverToBoxAdapter(child: SizedBox(height: 30)),
+              ],
+            ),
           ),
         ),
       ),
-        )
-
     );
   }
 
-  void _openDetail(BuildContext context, CoinModel coin, CoinViewModel vm) async {
+  void _openDetail(
+    BuildContext context,
+    CoinModel coin,
+    CoinViewModel vm,
+  ) async {
     FocusScope.of(context).unfocus(); // ✅ this is enough
 
     vm.fetchCoinDetail(coin.uuid);
@@ -214,7 +218,10 @@ class _HomeAppBar extends StatelessWidget {
               final total = vm.stats.value?.totalCoins ?? 0;
               return Text(
                 '$total coins tracked',
-                style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
+                style: const TextStyle(
+                  fontSize: 12,
+                  color: AppColors.textMuted,
+                ),
               );
             }),
           ],
@@ -289,7 +296,11 @@ class _SearchBarState extends State<_SearchBar> {
       style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
       decoration: InputDecoration(
         hintText: 'Search coins...',
-        prefixIcon: const Icon(Icons.search, color: AppColors.textMuted, size: 20),
+        prefixIcon: const Icon(
+          Icons.search,
+          color: AppColors.textMuted,
+          size: 20,
+        ),
         suffixIcon: Obx(() {
           if (!widget.vm.isSearching) return const SizedBox.shrink();
           return GestureDetector(
@@ -297,9 +308,12 @@ class _SearchBarState extends State<_SearchBar> {
               _ctrl.clear();
               widget.vm.clearSearch();
               _focus.unfocus();
-
             },
-            child: const Icon(Icons.close, color: AppColors.textMuted, size: 18),
+            child: const Icon(
+              Icons.close,
+              color: AppColors.textMuted,
+              size: 18,
+            ),
           );
         }),
       ),
@@ -336,17 +350,19 @@ class _SearchResults extends StatelessWidget {
             style: const TextStyle(fontSize: 12, color: AppColors.textMuted),
           ),
           const SizedBox(height: 10),
-          ...vm.searchResults.map((coin) => Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: CoinCard(
-              coin: coin,
-              onTap: () {
-                vm.fetchCoinDetail(coin.uuid);
-                vm.fetchPriceHistory(coin.uuid);
-                Get.to(() => DetailScreen(coin: coin));
-              },
+          ...vm.searchResults.map(
+            (coin) => Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: CoinCard(
+                coin: coin,
+                onTap: () {
+                  vm.fetchCoinDetail(coin.uuid);
+                  vm.fetchPriceHistory(coin.uuid);
+                  Get.to(() => DetailScreen(coin: coin));
+                },
+              ),
             ),
-          )),
+          ),
         ],
       );
     });
@@ -436,10 +452,12 @@ class _FiltersRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => TimePeriodSelector(
-      selected: vm.selectedTimePeriod.value,
-      options: CoinViewModel.timePeriods,
-      onSelected: vm.setTimePeriod,
-    ));
+    return Obx(
+      () => TimePeriodSelector(
+        selected: vm.selectedTimePeriod.value,
+        options: CoinViewModel.timePeriods,
+        onSelected: vm.setTimePeriod,
+      ),
+    );
   }
 }

@@ -5,7 +5,8 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl = 'https://api.coinranking.com/v2';
-  static const String apiKey = 'coinranking41b95eff7ca7e2ea50b045abbdcd9da584d679d8c82efd80';
+  static const String apiKey =
+      'coinranking41b95eff7ca7e2ea50b045abbdcd9da584d679d8c82efd80';
   static const Duration connectTimeout = Duration(seconds: 15);
   static const Duration receiveTimeout = Duration(seconds: 30);
 }
@@ -88,13 +89,17 @@ class _LogInterceptor extends Interceptor {
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    debugPrint('[API] <-- ${response.statusCode} ${response.requestOptions.path}');
+    debugPrint(
+      '[API] <-- ${response.statusCode} ${response.requestOptions.path}',
+    );
     handler.next(response);
   }
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    debugPrint('[API] ERROR ${err.response?.statusCode} ${err.requestOptions.path}');
+    debugPrint(
+      '[API] ERROR ${err.response?.statusCode} ${err.requestOptions.path}',
+    );
     handler.next(err);
   }
 }

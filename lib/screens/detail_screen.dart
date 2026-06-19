@@ -96,7 +96,11 @@ class _DetailScreenState extends State<DetailScreen> {
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: AppColors.border),
           ),
-          child: const Icon(Icons.arrow_back_ios_new, size: 16, color: AppColors.textPrimary),
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            size: 16,
+            color: AppColors.textPrimary,
+          ),
         ),
       ),
       title: Row(
@@ -246,10 +250,7 @@ class _ChartSection extends StatelessWidget {
               );
             }
 
-            return _PriceLineChart(
-              history: history,
-              isPositive: isPositive,
-            );
+            return _PriceLineChart(history: history, isPositive: isPositive);
           }),
         ),
       ],
@@ -292,9 +293,15 @@ class _PriceLineChart extends StatelessWidget {
           ),
         ),
         titlesData: FlTitlesData(
-          rightTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          bottomTitles: const AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          topTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
+          bottomTitles: const AxisTitles(
+            sideTitles: SideTitles(showTitles: false),
+          ),
           leftTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -302,10 +309,7 @@ class _PriceLineChart extends StatelessWidget {
               interval: (maxY - minY) / 4,
               getTitlesWidget: (value, _) => Text(
                 formatCompact(value),
-                style: const TextStyle(
-                  fontSize: 9,
-                  color: AppColors.textMuted,
-                ),
+                style: const TextStyle(fontSize: 9, color: AppColors.textMuted),
               ),
             ),
           ),
@@ -345,10 +349,7 @@ class _PriceLineChart extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [
-                  color.withOpacity(0.2),
-                  color.withOpacity(0.0),
-                ],
+                colors: [color.withOpacity(0.2), color.withOpacity(0.0)],
               ),
             ),
           ),
@@ -408,12 +409,14 @@ class _StatsGrid extends StatelessWidget {
           mainAxisSpacing: 10,
           childAspectRatio: 1.7,
           children: items
-              .map((item) => StatCard(
-            label: item.label.toUpperCase(),
-            value: item.value,
-            icon: item.icon,
-            iconColor: item.iconColor,
-          ))
+              .map(
+                (item) => StatCard(
+                  label: item.label.toUpperCase(),
+                  value: item.value,
+                  icon: item.icon,
+                  iconColor: item.iconColor,
+                ),
+              )
               .toList(),
         ),
       ],
@@ -471,7 +474,9 @@ class _AboutSectionState extends State<_AboutSection> {
               Text(
                 clean,
                 maxLines: _expanded ? null : 4,
-                overflow: _expanded ? TextOverflow.visible : TextOverflow.ellipsis,
+                overflow: _expanded
+                    ? TextOverflow.visible
+                    : TextOverflow.ellipsis,
                 style: const TextStyle(
                   fontSize: 13,
                   color: AppColors.textSecondary,
@@ -533,7 +538,7 @@ class _DetailShimmer extends StatelessWidget {
               childAspectRatio: 1.7,
               children: List.generate(
                 4,
-                    (_) => Container(decoration: _box(radius: 16)),
+                (_) => Container(decoration: _box(radius: 16)),
               ),
             ),
           ],

@@ -23,10 +23,8 @@ class GlobalStats {
       totalExchanges: json['totalExchanges'] as int? ?? 0,
       totalMarketCap: json['totalMarketCap'] as String? ?? '0',
       total24hVolume: json['total24hVolume'] as String? ?? '0',
-      btcDominance: double.tryParse(
-        json['btcDominance']?.toString() ?? '0',
-      ) ??
-          0.0,
+      btcDominance:
+          double.tryParse(json['btcDominance']?.toString() ?? '0') ?? 0.0,
     );
   }
 }
@@ -39,11 +37,11 @@ class CoinModel {
   final String? iconUrl;
   final String? price;
   final String? marketCap;
-  final String? change;         // % change (e.g. "2.45" or "-1.20")
+  final String? change; // % change (e.g. "2.45" or "-1.20")
   final String? volume24h;
   final int rank;
   final List<String> sparkline; // price history points for chart
-  final bool listedAt;          // true = recently listed
+  final bool listedAt; // true = recently listed
 
   const CoinModel({
     required this.uuid,
@@ -90,9 +88,7 @@ class CoinModel {
 
   /// Safe sparkline as list of doubles for fl_chart
   List<double> get sparklineDoubles {
-    return sparkline
-        .map((e) => double.tryParse(e) ?? 0.0)
-        .toList();
+    return sparkline.map((e) => double.tryParse(e) ?? 0.0).toList();
   }
 }
 
@@ -102,11 +98,7 @@ class CoinsResponse {
   final int total;
   final GlobalStats? stats;
 
-  const CoinsResponse({
-    required this.coins,
-    required this.total,
-    this.stats,
-  });
+  const CoinsResponse({required this.coins, required this.total, this.stats});
 
   factory CoinsResponse.fromJson(Map<String, dynamic> json) {
     final data = json['data'] as Map<String, dynamic>? ?? {};
@@ -179,7 +171,8 @@ class CoinDetail {
       marketCap: json['marketCap'] as String?,
       change: json['change'] as String?,
       volume24h: json['24hVolume'] as String?,
-      allTimeHigh: (json['allTimeHigh'] as Map<String, dynamic>?)?['price'] as String?,
+      allTimeHigh:
+          (json['allTimeHigh'] as Map<String, dynamic>?)?['price'] as String?,
       rank: json['rank'] as int? ?? 0,
       sparkline: sparkline,
       links: links,
@@ -203,11 +196,7 @@ class CoinLink {
   final String url;
   final String type;
 
-  const CoinLink({
-    required this.name,
-    required this.url,
-    required this.type,
-  });
+  const CoinLink({required this.name, required this.url, required this.type});
 
   factory CoinLink.fromJson(Map<String, dynamic> json) {
     return CoinLink(

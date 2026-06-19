@@ -179,7 +179,7 @@ class StatsRowShimmer extends StatelessWidget {
     return Row(
       children: List.generate(
         2,
-            (i) => Expanded(
+        (i) => Expanded(
           child: Padding(
             padding: EdgeInsets.only(left: i == 0 ? 0 : 8),
             child: const StatCardShimmer(),
@@ -253,10 +253,7 @@ class StatCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               subtitle!,
-              style: const TextStyle(
-                fontSize: 11,
-                color: AppColors.textMuted,
-              ),
+              style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
             ),
           ],
         ],
@@ -305,7 +302,11 @@ class CoinIcon extends StatelessWidget {
         color: AppColors.cardLight,
         shape: BoxShape.circle,
       ),
-      child: const Icon(Icons.currency_bitcoin, color: AppColors.textMuted, size: 20),
+      child: const Icon(
+        Icons.currency_bitcoin,
+        color: AppColors.textMuted,
+        size: 20,
+      ),
     );
   }
 }
@@ -363,10 +364,7 @@ class MiniSparkline extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [
-                    color.withOpacity(0.2),
-                    color.withOpacity(0.0),
-                  ],
+                  colors: [color.withOpacity(0.2), color.withOpacity(0.0)],
                 ),
               ),
             ),
@@ -469,7 +467,10 @@ class CoinCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: changeColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(6),
@@ -518,7 +519,11 @@ class AppErrorWidget extends StatelessWidget {
             color: AppColors.error.withOpacity(0.1),
             shape: BoxShape.circle,
           ),
-          child: const Icon(Icons.error_outline, color: AppColors.error, size: 28),
+          child: const Icon(
+            Icons.error_outline,
+            color: AppColors.error,
+            size: 28,
+          ),
         ),
         const SizedBox(height: 16),
         Text(
@@ -553,17 +558,11 @@ class AppErrorWidget extends StatelessWidget {
 
     if (fullScreen) {
       return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32),
-          child: content,
-        ),
+        child: Padding(padding: const EdgeInsets.all(32), child: content),
       );
     }
 
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: content,
-    );
+    return Padding(padding: const EdgeInsets.all(16), child: content);
   }
 }
 
@@ -620,10 +619,7 @@ class AppEmptyWidget extends StatelessWidget {
             ),
             if (actionLabel != null && onAction != null) ...[
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: onAction,
-                child: Text(actionLabel!),
-              ),
+              ElevatedButton(onPressed: onAction, child: Text(actionLabel!)),
             ],
           ],
         ),

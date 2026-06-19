@@ -25,7 +25,8 @@ class CoinViewModel extends GetxController {
   final RxString detailError = ''.obs;
 
   // Price History
-  final RxList<Map<String, dynamic>> priceHistory = <Map<String, dynamic>>[].obs;
+  final RxList<Map<String, dynamic>> priceHistory =
+      <Map<String, dynamic>>[].obs;
   final RxBool historyLoading = false.obs;
 
   // Search
@@ -52,7 +53,7 @@ class CoinViewModel extends GetxController {
     // Debounce search — waits 400ms after user stops typing
     debounce(
       searchQuery,
-          (_) => _performSearch(searchQuery.value),
+      (_) => _performSearch(searchQuery.value),
       time: const Duration(milliseconds: 400),
     );
   }
@@ -60,10 +61,7 @@ class CoinViewModel extends GetxController {
   // ─── Initial Load ────────────────────────────────────────────────────────────
 
   Future<void> _loadInitialData() async {
-    await Future.wait([
-      fetchStats(),
-      fetchCoins(refresh: true),
-    ]);
+    await Future.wait([fetchStats(), fetchCoins(refresh: true)]);
   }
 
   // ─── Global Stats ────────────────────────────────────────────────────────────
@@ -124,10 +122,7 @@ class CoinViewModel extends GetxController {
   }
 
   Future<void> refreshAll() async {
-    await Future.wait([
-      fetchStats(),
-      fetchCoins(refresh: true),
-    ]);
+    await Future.wait([fetchStats(), fetchCoins(refresh: true)]);
   }
 
   // ─── Filter / Sort ───────────────────────────────────────────────────────────
@@ -164,7 +159,10 @@ class CoinViewModel extends GetxController {
 
   // ─── Price History ───────────────────────────────────────────────────────────
 
-  Future<void> fetchPriceHistory(String uuid, {String timePeriod = '7d'}) async {
+  Future<void> fetchPriceHistory(
+    String uuid, {
+    String timePeriod = '7d',
+  }) async {
     historyLoading.value = true;
     priceHistory.clear();
     try {
@@ -217,12 +215,20 @@ class CoinViewModel extends GetxController {
 
   /// Available time period options
   static const List<String> timePeriods = [
-    '3h', '24h', '7d', '30d', '3m', '1y',
+    '3h',
+    '24h',
+    '7d',
+    '30d',
+    '3m',
+    '1y',
   ];
 
   /// Available sort options
   static const List<String> orderByOptions = [
-    'marketCap', 'price', 'volume', 'change',
+    'marketCap',
+    'price',
+    'volume',
+    'change',
   ];
 
   static const Map<String, String> orderByLabels = {

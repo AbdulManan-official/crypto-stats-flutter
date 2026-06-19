@@ -13,14 +13,15 @@ class Responsive {
 
   static bool isTablet(BuildContext context) =>
       MediaQuery.sizeOf(context).width >= _mobileBreakpoint &&
-          MediaQuery.sizeOf(context).width < _tabletBreakpoint;
+      MediaQuery.sizeOf(context).width < _tabletBreakpoint;
 
   static bool isDesktop(BuildContext context) =>
       MediaQuery.sizeOf(context).width >= _tabletBreakpoint;
 
   // Screen dimensions
   static double width(BuildContext context) => MediaQuery.sizeOf(context).width;
-  static double height(BuildContext context) => MediaQuery.sizeOf(context).height;
+  static double height(BuildContext context) =>
+      MediaQuery.sizeOf(context).height;
 
   // Percentage-based sizing
   static double wp(BuildContext context, double percent) =>
@@ -31,11 +32,11 @@ class Responsive {
 
   // Adaptive value — returns value based on screen type
   static T adaptive<T>(
-      BuildContext context, {
-        required T mobile,
-        T? tablet,
-        T? desktop,
-      }) {
+    BuildContext context, {
+    required T mobile,
+    T? tablet,
+    T? desktop,
+  }) {
     if (isDesktop(context)) return desktop ?? tablet ?? mobile;
     if (isTablet(context)) return tablet ?? mobile;
     return mobile;
@@ -43,21 +44,19 @@ class Responsive {
 
   // Adaptive font size
   static double fontSize(
-      BuildContext context, {
-        required double mobile,
-        double? tablet,
-        double? desktop,
-      }) =>
-      adaptive(context, mobile: mobile, tablet: tablet, desktop: desktop);
+    BuildContext context, {
+    required double mobile,
+    double? tablet,
+    double? desktop,
+  }) => adaptive(context, mobile: mobile, tablet: tablet, desktop: desktop);
 
   // Adaptive padding
   static EdgeInsets padding(
-      BuildContext context, {
-        EdgeInsets mobile = const EdgeInsets.all(16),
-        EdgeInsets? tablet,
-        EdgeInsets? desktop,
-      }) =>
-      adaptive(context, mobile: mobile, tablet: tablet, desktop: desktop);
+    BuildContext context, {
+    EdgeInsets mobile = const EdgeInsets.all(16),
+    EdgeInsets? tablet,
+    EdgeInsets? desktop,
+  }) => adaptive(context, mobile: mobile, tablet: tablet, desktop: desktop);
 
   // Adaptive horizontal padding
   static EdgeInsets horizontalPadding(BuildContext context) {
@@ -68,12 +67,11 @@ class Responsive {
 
   // Adaptive grid cross axis count
   static int gridCrossAxisCount(
-      BuildContext context, {
-        int mobile = 2,
-        int tablet = 3,
-        int desktop = 4,
-      }) =>
-      adaptive(context, mobile: mobile, tablet: tablet, desktop: desktop);
+    BuildContext context, {
+    int mobile = 2,
+    int tablet = 3,
+    int desktop = 4,
+  }) => adaptive(context, mobile: mobile, tablet: tablet, desktop: desktop);
 
   // Safe area helpers
   static double topPadding(BuildContext context) =>
